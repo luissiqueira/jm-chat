@@ -1,0 +1,7 @@
+jm-chat 0.1 (https://github.com/luissiqueira/jm-chat)
+
+Opções de uso:
+/username USERNAME      Altera o nome de exibição para o USERNAME escolhido.
+/emoticons              Lista os emoticons disponíveis para uso nas mensagens.
+/help                   Exibe essa mensagem.
+
