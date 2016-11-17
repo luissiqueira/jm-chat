@@ -1,5 +1,14 @@
 #!/bin/bash
 
+trap stop_client INT
+function stop_client {
+  echo
+  echo "Stopping jm-chat client..."
+  echo "UUID: $uuid"
+  ps | grep -v grep | grep tail | grep "$uuid" | cut -f1 -d "t" | xargs -n 1 kill
+  exit 0
+}
+
 uuid=$(uuidgen)
 username=$uuid
 users_dir=/tmp/jm-chat/users
@@ -47,10 +56,16 @@ function log_event {
   echo "$@" >> $all_messages_file
 }
 
+function format_text_with_emoticons {
+  # msg=$@
+  # echo "${msg//<3/❤}"
+  echo $@
+}
+
 function send_system_message {
   for i in `ls $users_dir`
   do
-    echo "$@" >> $users_dir/$i
+    format_text_with_emoticons $@ >> $users_dir/$i
   done
   log_event $@
 }
