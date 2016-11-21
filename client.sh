@@ -12,6 +12,7 @@ touch $all_messages_file
 
 function connect {
   tail -n 0 -f $my_messages_file&
+  echo
   echo "Usuário conectado!"
   echo
 }
@@ -22,6 +23,9 @@ function handle_entry {
     case $1 in
       "/help"*)
         show_help
+      ;;
+      "/emoticons"*)
+        show_emoticons
       ;;
       "/username"*)
         candidate_username=${@#"/username"}
@@ -48,9 +52,9 @@ function log_event {
 }
 
 function format_text_with_emoticons {
-  # msg=$@
-  # echo "${msg//<3/❤}"
-  echo $@
+  msg=$@
+  msg="${msg//<3/❤}"
+  echo $msg
 }
 
 function send_system_message {
@@ -64,7 +68,7 @@ function send_system_message {
 function send_message {
   for i in `ls $users_dir | grep -v $uuid`
   do
-    echo "[$username] disse: $@" >> $users_dir/$i
+    format_text_with_emoticons "[$username] disse: $@" >> $users_dir/$i
   done
   log_event "[$username] disse: $@"
 
@@ -80,6 +84,10 @@ function show_help {
   cat help.txt
 }
 
+function show_emoticons {
+  cat emoticons.txt
+}
+
 function setup_username {
   echo -ne "Bem vindo ao jm-chat.\nInforme o nome que deseja utilizar: "
   read candidate_username
@@ -88,7 +96,6 @@ function setup_username {
     echo -n "Informe o nome que deseja utilizar: "
     read candidate_username
   done
-  echo
   log_event "[$username] alterou o nome para [$candidate_username]."
   username=$candidate_username
 }

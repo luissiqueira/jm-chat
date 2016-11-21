@@ -7,6 +7,8 @@ trap stop_server INT
 function stop_server {
   echo
   echo "Stopping jm-chat server..."
+  ps | grep -v grep | grep tail | cut -f1 -d" " | xargs -n 1 kill
+  ps | grep -v grep | grep "/bin/bash ./client.sh" | cut -f1 -d" " | xargs -n 1 kill
   exit 0
 }
 
