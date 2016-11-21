@@ -1,14 +1,5 @@
 #!/bin/bash
 
-trap stop_client INT
-function stop_client {
-  echo
-  echo "Stopping jm-chat client..."
-  echo "UUID: $uuid"
-  ps | grep -v grep | grep tail | grep "$uuid" | cut -f1 -d "t" | xargs -n 1 kill
-  exit 0
-}
-
 uuid=$(uuidgen)
 username=$uuid
 users_dir=/tmp/jm-chat/users
@@ -20,7 +11,7 @@ touch $my_messages_file
 touch $all_messages_file
 
 function connect {
-  tail -n 0 -q -f $my_messages_file&
+  tail -n 0 -f $my_messages_file&
   echo "Usuário conectado!"
   echo
 }
@@ -90,14 +81,14 @@ function show_help {
 }
 
 function setup_username {
-  echo -n "Informe o nome que deseja utilizar: "
+  echo -ne "Bem vindo ao jm-chat.\nInforme o nome que deseja utilizar: "
   read candidate_username
   while [ -z "$candidate_username" ]
   do
     echo -n "Informe o nome que deseja utilizar: "
     read candidate_username
   done
-
+  echo
   log_event "[$username] alterou o nome para [$candidate_username]."
   username=$candidate_username
 }
@@ -109,7 +100,6 @@ send_system_message "[$username] entrou no chat."
 
 while :
 do
-  echo -n "> "
   read input
   if [ ! -z "$input" ]
   then

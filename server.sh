@@ -1,19 +1,19 @@
 #!/bin/bash
 
+users_dir=/tmp/jm-chat/users
+mkdir -p $users_dir
+
 trap stop_server INT
 function stop_server {
   echo
   echo "Stopping jm-chat server..."
-  send_system_message "Server is shutdown."
-  ps | grep -v grep | grep tail | cut -f1 -d "t" | xargs -n 1 kill
-  ps | grep -v grep | grep "/bin/bash ./client.sh" | cut -f1 -d "t" | xargs -n 1 kill
   exit 0
 }
 
 function send_system_message {
-  users_dir=/tmp/jm-chat/users
   for i in `ls $users_dir`
   do
+    echo "$users_dir/$i"
     echo $@ >> $users_dir/$i
   done
 }
@@ -25,7 +25,6 @@ then
   echo "Starting jm-chat server..."#
   while :
   do
-    timestamp=`date +%s`
     $start_command
   done
 else
