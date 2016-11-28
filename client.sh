@@ -72,6 +72,8 @@ function send_message {
   done
   log_event "[$username] disse: $@"
 
+  echo -e `format_text_with_emoticons "[Você] disse: $@"`
+
   tl=`wc -l < $all_messages_file`
   if [ `expr $tl` -gt 100 ]
   then

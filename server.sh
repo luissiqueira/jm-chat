@@ -12,14 +12,6 @@ function stop_server {
   exit 0
 }
 
-function send_system_message {
-  for i in `ls $users_dir`
-  do
-    echo "$users_dir/$i"
-    echo $@ >> $users_dir/$i
-  done
-}
-
 start_command="ncat -vvv -k -l -p 8080 -c ./client.sh"
 
 if [ "$(ps | grep -v grep | grep -c "$start_command")" -lt "1" ]
