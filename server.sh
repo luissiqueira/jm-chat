@@ -16,11 +16,8 @@ start_command="ncat -vvv -k -l -p 8080 -c ./client.sh"
 
 if [ "$(ps | grep -v grep | grep -c "$start_command")" -lt "1" ]
 then
-  echo "Starting jm-chat server..."#
-  while :
-  do
-    $start_command
-  done
+  echo "Starting jm-chat server..."
+  $start_command
 else
   echo "jm-chat server already running."
 fi
