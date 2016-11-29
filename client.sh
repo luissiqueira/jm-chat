@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -f
 
 uuid=$(uuidgen)
 username=$uuid
